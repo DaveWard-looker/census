@@ -4,7 +4,8 @@ view: sa_boundaries {
   dimension: county_code {
     hidden: yes
     type: number
-    sql: ${TABLE}.COUNTY_CODE ;;
+    # sql: ${TABLE}.COUNTY_CODE ;;
+    sql: ${TABLE}.COUNTY ;;
   }
   dimension: county_english {
     label: "County"
