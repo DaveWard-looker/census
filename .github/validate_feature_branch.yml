@@ -1,47 +1,47 @@
-     name: Validate Feature Branch in Dev
+name: Validate Feature Branch in Dev
 
-     on:
-       pull_request:
-         types: [opened, edited, synchronize]
-         branches:
-           - uat
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+    branches:
+      - uat
 
-    jobs:
-      validate-and-deploy:
-        runs-on: ubuntu-latest
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
 
-        env:
-          LOOKERSDM_BASE_URL: ${{ secrets.DEV_LOOKER_BASE_URL }}
-          LOOKERSDM_CLIENT_ID: ${{ secrets.DEV_LOOKER_CLIENT_ID }}
-          LOOKERSDM_CLIENT_SECRET: ${{ secrets.DEV_LOOKER_CLIENT_SECRET }}
-          DEV_LOOKER_PROJECT_ID: ${{ secrets.DEV_LOOKER_PROJECT_ID }}
-          #GIT_BRANCH: ${{ github.event.inputs.branch }}
+  env:
+    LOOKERSDM_BASE_URL: ${{ secrets.DEV_LOOKER_BASE_URL }}
+    LOOKERSDM_CLIENT_ID: ${{ secrets.DEV_LOOKER_CLIENT_ID }}
+    LOOKERSDM_CLIENT_SECRET: ${{ secrets.DEV_LOOKER_CLIENT_SECRET }}
+    DEV_LOOKER_PROJECT_ID: ${{ secrets.DEV_LOOKER_PROJECT_ID }}
+        #GIT_BRANCH: ${{ github.event.inputs.branch }}
 
-        steps:
-          - name: Checkout repository
-            uses: actions/checkout@v4
-            with:
-              ref: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+            ref: ${{ github.event.pull_request.head.sha }}
 
-          - name: Upgrade pip
-            run: pip install --upgrade pip
+      - name: Upgrade pip
+        run: pip install --upgrade pip
 
-          - name: Set up Python and install dependencies
-            uses: actions/setup-python@v5
-            with:
-              python-version: '3.13'
+      - name: Set up Python and install dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
 
-          - name: Install Spectacles and Looker SDK
-            run: pip install spectacles looker_sdk
+      - name: Install Spectacles and Looker SDK
+        run: pip install spectacles looker_sdk
 
-          - name: Upgrade Spectacles
-            run: pip install --upgrade spectacles
+      - name: Upgrade Spectacles
+        run: pip install --upgrade spectacles
 
-          - name: Spectacles Version
-            run: spectacles --version
+      - name: Spectacles Version
+        run: spectacles --version
 
-          - name: Spectacles SQL Checks - Dev instance
-            run: spectacles sql --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project corporate_advance_analytics --branch ${{ github.event.pull_request.head.ref }} --remote-reset --incremental -v
+      - name: Spectacles SQL Checks - Dev instance
+        run: spectacles sql --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project corporate_advance_analytics --branch ${{ github.event.pull_request.head.ref }} --remote-reset --incremental -v
 
-          - name: Spectacles Validation Checks - Dev instance
-            run: spectacles content --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project corporate_advance_analytics --branch ${{ github.event.pull_request.head.ref }} --remote-reset
+      - name: Spectacles Validation Checks - Dev instance
+        run: spectacles content --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project corporate_advance_analytics --branch ${{ github.event.pull_request.head.ref }} --remote-reset
