@@ -41,7 +41,7 @@ jobs:
         run: spectacles --version
 
       - name: Spectacles SQL Checks - Dev instance
-        run: spectacles sql --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project corporate_advance_analytics --branch ${{ github.event.pull_request.head.ref }} --remote-reset --incremental -v
+        run: spectacles sql --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project census --branch ${{ github.event.pull_request.head.ref }} --remote-reset --incremental -v
 
       - name: Spectacles Validation Checks - Dev instance
-        run: spectacles content --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project corporate_advance_analytics --branch ${{ github.event.pull_request.head.ref }} --remote-reset
+        run: spectacles content --base-url https://looker-public-embed.gcccosmo.com --client-id ${{ secrets.DEV_LOOKER_CLIENT_ID }} --client-secret ${{ secrets.DEV_LOOKER_CLIENT_SECRET }} --port 443 --project census --branch ${{ github.event.pull_request.head.ref }} --remote-reset
